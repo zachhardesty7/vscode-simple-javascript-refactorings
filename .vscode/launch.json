@@ -1,0 +1,87 @@
+// A launch configuration that launches the extension inside a new window
+// Use IntelliSense to learn about possible attributes.
+// Hover to view descriptions of existing attributes.
+// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // REVIEW: usually does not launch vscode on Windows
+      // https://github.com/Microsoft/vscode/issues/55620
+      // https://github.com/microsoft/TypeScript/issues/32086
+      "name": "Run Extension w Watch",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        // "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceFolder}"
+      ],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"],
+      "preLaunchTask": "yarn: watch"
+      // "preLaunchTask": "npm: watch"
+    },
+    {
+      "name": "Run Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        // "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceFolder}"
+      ],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    // {
+    //   "args": [
+    //     "-u",
+    //     "bdd",
+    //     "--timeout",
+    //     "999999",
+    //     "--colors",
+    //     "${workspaceFolder}/out/test"
+    //   ],
+    //   "internalConsoleOptions": "openOnSessionStart",
+    //   "name": "Mocha Tests",
+    //   "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+    //   "request": "launch",
+    //   "skipFiles": ["<node_internals>/**"],
+    //   "type": "pwa-node"
+    // },
+    {
+      "name": "Launch Program",
+      "program": "${workspaceFolder}/out/test/runTest.js",
+      "request": "launch",
+      "trace": true,
+      // "stopOnEntry": true,
+      "sourceMaps": true,
+      // "outFiles": ["${workspaceFolder}/out/**/*.js", "!**/node_modules/**"],
+      // "smartStep": true,
+      // "showAsyncStacks": true,
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**"],
+      // "console": "integratedTerminal",
+      "preLaunchTask": "yarn compile",
+      "type": "pwa-node"
+    },
+    // {
+    //   "command": "yarn test",
+    //   "name": "Run yarn test",
+    //   "request": "launch",
+    //   "type": "node-terminal"
+    // },
+    {
+      "name": "Extension Tests",
+      "type": "pwa-extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionTestsPath=${workspaceFolder}/out/test/suite"
+      ],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"],
+      "preLaunchTask": "yarn compile"
+    }
+  ]
+}

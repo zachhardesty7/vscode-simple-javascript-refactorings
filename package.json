@@ -1,0 +1,106 @@
+{
+  "name": "vscode-simple-javascript-refactorings",
+  "version": "1.0.0",
+  "preview": true,
+  "displayName": "simple javascript refactorings",
+  "description": "lightweight, useful code actions to improve your code",
+  "galleryBanner": {
+    "color": "#34223A",
+    "theme": "dark"
+  },
+  "eslintConfig": {
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "extends": [
+      "plugin:@typescript-eslint/recommended",
+      "hardesty/prettier"
+    ],
+    "env": {
+      "mocha": true,
+      "webextensions": true
+    },
+    "ignorePatterns": "*.js",
+    "overrides": [
+      {
+        "files": [
+          "*.ts",
+          "*.tsx"
+        ],
+        "rules": {
+          "curly": "error",
+          "jsdoc/require-param-type": "off",
+          "jsdoc/require-returns-type": "off"
+        }
+      }
+    ],
+    "rules": {
+      "promise/catch-or-return": "off",
+      "@typescript-eslint/no-extra-semi": "off",
+      "@typescript-eslint/no-unused-vars": "error",
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/explicit-module-boundary-types": "error",
+      "@typescript-eslint/no-non-null-assertion": "error"
+    }
+  },
+  "prettier": {
+    "semi": false
+  },
+  "engines": {
+    "vscode": "^1.59.0"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact"
+  ],
+  "main": "./out/src/extension.js",
+  "publisher": "zachhardesty",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zachhardesty7/vscode-simple-javascript-refactorings"
+  },
+  "license": "MIT",
+  "contributes": {
+    "commands": []
+  },
+  "keybindings": [],
+  "scripts": {
+    "clean": "rm -rf ./out",
+    "compile": "tsc -p ./",
+    "lint": "eslint . --ext .ts,.tsx",
+    "watch": "tsc -watch -p ./",
+    "_pack": "vsce package",
+    "_upload": "vsce publish",
+    "pub": "npm-run-all clean compile _pack _upload",
+    "_run-test": "node -r dotenv/config --async-stack-traces ./out/test/runTest.js",
+    "test": "npm-run-all compile _run-test"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.4",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.6.1",
+    "@types/vscode": "^1.59.0",
+    "@typescript-eslint/eslint-plugin": "^4.29.1",
+    "@typescript-eslint/parser": "^4.29.1",
+    "ansi-colors": "^4.1.1",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-hardesty": "^4.2.0",
+    "glob": "^7.1.7",
+    "mocha": "^9.0.3",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.3.2",
+    "source-map-support": "^0.5.19",
+    "typescript": "^4.3.5",
+    "vsce": "^1.96.1",
+    "vscode-test": "^1.6.1"
+  }
+}
