@@ -10,7 +10,7 @@ extension that provides lightweight, useful code actions to improve your code
 ## Features
 
 - JSX/TSX
-  - remove unnecessary braces from string props (e.g. `prop={'string'}` -> `prop='string'`)
+  - remove unnecessary braces from simple string props (e.g. `` prop={`string`} `` -> `prop="string"`)
 
 ## Usage
 
