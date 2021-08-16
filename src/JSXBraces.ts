@@ -2,7 +2,7 @@ import * as vscode from "vscode"
 
 /** @see https://regex101.com/r/jQ8V8m/0 */
 const REGEX =
-  /(?<fullMatch>(?<prop>\w+\s*=\s*)({)(?<quote1>["'`])(?<string>\w*)(?<quote2>["'`])(}))/
+  /(?<fullMatch>(?<prop>\w+\s*=\s*)({)(?<quote1>["'`])(?<string>[^"$'`{}]*)(?<quote2>["'`])(}))/
 
 /** code that is used to associate diagnostic entries with code actions. */
 export const UNNECESSARY_BRACES_MENTION = "unnecessary_braces_mention"
