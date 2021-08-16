@@ -1,6 +1,6 @@
 {
   "name": "vscode-simple-javascript-refactorings",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "preview": true,
   "displayName": "simple javascript refactorings",
   "description": "lightweight, useful code actions to improve your code",

@@ -2,7 +2,7 @@ import * as vscode from "vscode"
 
 /** @see https://regex101.com/r/jQ8V8m/0 */
 const REGEX =
-  /(?<fullMatch>(?<prop>\w+\s*=\s*)({)(?<value>(["'`])\w*(["'`]))(}))/
+  /(?<fullMatch>(?<prop>\w+\s*=\s*)({)(?<quote1>["'`])(?<string>\w*)(?<quote2>["'`])(}))/
 
 /** code that is used to associate diagnostic entries with code actions. */
 export const UNNECESSARY_BRACES_MENTION = "unnecessary_braces_mention"
@@ -32,7 +32,13 @@ export function refreshDiagnostics(
       const BRACES_LENGTH = 2
       const range = new vscode.Range(
         start,
-        start.translate(0, matchRegex.groups.value.length + BRACES_LENGTH)
+        start.translate(
+          0,
+          matchRegex.groups.quote1.length +
+            matchRegex.groups.string.length +
+            matchRegex.groups.quote2.length +
+            BRACES_LENGTH
+        )
       )
 
       const diagnostic = new vscode.Diagnostic(
@@ -107,13 +113,16 @@ export class JSXBraces implements vscode.CodeActionProvider {
 
       if (matchRegex && matchRegex.groups) {
         const startPos = line.range.start.with({ character: matchRegex.index })
+        /** convert ` to " to prevent invalid JSX */
+        const quoteChar =
+          matchRegex.groups.quote1 === "`" ? '"' : matchRegex.groups.quote1
         action.edit.replace(
           document.uri,
           new vscode.Range(
             startPos,
             startPos.translate(0, matchRegex.groups.fullMatch.length)
           ),
-          `${matchRegex.groups.prop}${matchRegex.groups.value}`
+          `${matchRegex.groups.prop}${quoteChar}${matchRegex.groups.string}${quoteChar}`
         )
       }
 
