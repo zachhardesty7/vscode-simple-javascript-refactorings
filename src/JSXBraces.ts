@@ -44,7 +44,7 @@ export function refreshDiagnostics(
       const diagnostic = new vscode.Diagnostic(
         range,
         "curly braces are unnecessary here",
-        vscode.DiagnosticSeverity.Warning
+        vscode.DiagnosticSeverity.Hint
       )
 
       diagnostic.code = UNNECESSARY_BRACES_MENTION
