@@ -9,6 +9,8 @@ extension that provides lightweight, useful code actions to improve your code
 
 ## Features
 
+- JS(X)/TS(X)
+  - remove curly braces, quotes, & `$` from simple unnecessary template strings (e.g. `` prop={`${STR_CONST}`} `` -> `prop={STR_CONST}`)
 - JSX/TSX
   - remove unnecessary braces from simple string props (e.g. `` prop={`string`} `` -> `prop="string"`)
 

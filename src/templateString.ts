@@ -1,47 +1,37 @@
 import * as vscode from "vscode"
 
-/** @see https://regex101.com/r/VKl0Bl/latest */
-const REGEX =
-  /(?<fullMatch>(?<prop>\w+\s*=\s*)({)(?<quote1>["'`])(?<string>[^"$'`{}]*)(?<quote2>["'`])(}))/
+/** @see https://regex101.com/r/wBiwPn/latest */
+const REGEX = /(?<fullMatch>(`\${)(?<var>\S*)(}`))/
 
 /** code that is used to associate diagnostic entries with code actions. */
-export const UNNECESSARY_BRACES_MENTION = "unnecessary_braces_mention"
+export const UNNECESSARY_TEMPLATE_MENTION = "unnecessary_template_mention"
 
 /**
  * @param diagnostics - collection to add created diagnostic to
  * @param lineOfText - current line in the document to check
  */
-export function addJSXBracesDiagnostic(
+export function addTemplateStringDiagnostic(
   diagnostics: vscode.Diagnostic[],
   lineOfText: vscode.TextLine
 ): void {
   const matchRegex = lineOfText.text.match(REGEX)
 
   if (matchRegex && matchRegex.index && matchRegex.groups) {
-    // create range that represents, where in the document the word is
-    const start = lineOfText.range.start.with({
-      character: matchRegex.index + matchRegex.groups.prop.length,
-    })
-
-    const BRACES_LENGTH = 2
+    /** represents location of the matched pattern in the document */
     const range = new vscode.Range(
-      start,
-      start.translate(
-        0,
-        matchRegex.groups.quote1.length +
-          matchRegex.groups.string.length +
-          matchRegex.groups.quote2.length +
-          BRACES_LENGTH
-      )
+      lineOfText.lineNumber,
+      matchRegex.index,
+      lineOfText.lineNumber,
+      matchRegex.index + matchRegex.groups.fullMatch.length
     )
 
     const diagnostic = new vscode.Diagnostic(
       range,
-      "curly braces are unnecessary here",
+      "template string is probably unnecessary here",
       vscode.DiagnosticSeverity.Hint
     )
 
-    diagnostic.code = UNNECESSARY_BRACES_MENTION
+    diagnostic.code = UNNECESSARY_TEMPLATE_MENTION
     diagnostics.push(diagnostic)
   }
 }
@@ -49,7 +39,7 @@ export function addJSXBracesDiagnostic(
 /**
  * Provides code actions corresponding to diagnostic problems.
  */
-export class JSXBraces implements vscode.CodeActionProvider {
+export class TemplateString implements vscode.CodeActionProvider {
   public static readonly providedCodeActionKinds = [
     vscode.CodeActionKind.QuickFix,
   ]
@@ -67,23 +57,20 @@ export class JSXBraces implements vscode.CodeActionProvider {
       const matchRegex = line.text.match(REGEX)
 
       const action = new vscode.CodeAction(
-        "remove curly braces",
+        'remove template quotes, braces, and "$"',
         vscode.CodeActionKind.QuickFix
       )
       action.edit = new vscode.WorkspaceEdit()
 
-      if (matchRegex && matchRegex.groups) {
-        const startPos = line.range.start.with({ character: matchRegex.index })
-        /** convert ` to " to prevent invalid JSX */
-        const quoteChar =
-          matchRegex.groups.quote1 === "`" ? '"' : matchRegex.groups.quote1
+      if (matchRegex && matchRegex.index && matchRegex.groups) {
+        const startPos = new vscode.Position(line.lineNumber, matchRegex.index)
         action.edit.replace(
           document.uri,
           new vscode.Range(
             startPos,
             startPos.translate(0, matchRegex.groups.fullMatch.length)
           ),
-          `${matchRegex.groups.prop}${quoteChar}${matchRegex.groups.string}${quoteChar}`
+          `${matchRegex.groups.var}`
         )
       }
 
@@ -95,7 +82,7 @@ export class JSXBraces implements vscode.CodeActionProvider {
 
     // for each diagnostic entry that has the matching `code`, create a code action command
     return context.diagnostics
-      .filter((diagnostic) => diagnostic.code === UNNECESSARY_BRACES_MENTION)
+      .filter((diagnostic) => diagnostic.code === UNNECESSARY_TEMPLATE_MENTION)
       .map((diagnostic) => createCommandCodeAction(diagnostic))
   }
 }
