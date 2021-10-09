@@ -12,6 +12,18 @@
     "root": true,
     "parser": "@typescript-eslint/parser",
     "settings": {
+      "import/extensions": [
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx"
+      ],
+      "import/parsers": {
+        "@typescript-eslint/parser": [
+          ".ts",
+          ".tsx"
+        ]
+      },
       "import/core-modules": [
         "vscode"
       ]
@@ -21,13 +33,15 @@
     ],
     "extends": [
       "plugin:@typescript-eslint/recommended",
-      "hardesty/prettier"
+      "hardesty/prettier",
+      "plugin:import/typescript"
     ],
     "env": {
       "mocha": true,
       "webextensions": true
     },
     "ignorePatterns": "*.js",
+    "reportUnusedDisableDirectives": true,
     "overrides": [
       {
         "files": [
@@ -38,6 +52,18 @@
           "curly": "error",
           "jsdoc/require-param-type": "off",
           "jsdoc/require-returns-type": "off"
+        }
+      },
+      {
+        "files": [
+          "*.js",
+          "*.jsx"
+        ],
+        "rules": {
+          "no-use-before-define": "off",
+          "import/no-extraneous-dependencies": "off",
+          "@typescript-eslint/explicit-module-boundary-types": "off",
+          "react/jsx-curly-brace-presence": "off"
         }
       }
     ],
