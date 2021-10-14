@@ -1,7 +1,7 @@
 import * as vscode from "vscode"
 
 /** @see https://regex101.com/r/wBiwPn/latest */
-const REGEX = /(?<fullMatch>(`\${)(?<var>\S*)(}`))/
+const REGEX = /(?<fullMatch>(`\${)(?<var>[^}]*)(}`))/
 
 /** code that is used to associate diagnostic entries with code actions. */
 export const UNNECESSARY_TEMPLATE_MENTION = "unnecessary_template_mention"

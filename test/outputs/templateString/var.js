@@ -1,2 +1,3 @@
-const STRING_CONST = 'stringConst';
-export const helperVar = `${STRING_CONST}`
+const varAny = 'anyValue'
+
+export const helperVar = varAny

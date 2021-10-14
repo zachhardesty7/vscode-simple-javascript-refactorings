@@ -1,6 +1,6 @@
 {
   "name": "vscode-simple-javascript-refactorings",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "preview": true,
   "displayName": "simple javascript refactorings",
   "description": "lightweight, useful code actions to improve your code",
@@ -88,7 +88,7 @@
     "semi": false
   },
   "engines": {
-    "vscode": "^1.59.0"
+    "vscode": "^1.61.0"
   },
   "categories": [
     "Linters",
@@ -116,6 +116,7 @@
     "compile": "tsc -p ./",
     "lint": "eslint . --ext .ts,.tsx",
     "watch": "tsc -watch -p ./",
+    "start": "read -p 'start the debugger then press enter to start tsc'; yarn watch",
     "_pack": "vsce package",
     "_upload": "vsce publish",
     "pub": "npm-run-all clean compile _pack _upload",

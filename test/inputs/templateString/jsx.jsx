@@ -1,9 +1,10 @@
 import * as React from "react"
 
-const STRING_CONST = 'stringConst';
+const varAny = 'anyValue'
+
 export const ReactComponent = () => (
   <ReactComponent
     property
-    target={`${STRING_CONST}`}
+    target={`${varAny}`}
   />
 )
